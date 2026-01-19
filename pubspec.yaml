@@ -1,5 +1,5 @@
 name: univibe
-description: "A new Flutter project."
+description: "An University Event Tracking System."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -31,9 +31,43 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  # Supabase
+  supabase_flutter: ^1.10.0
+  
+  # State Management
+  provider: ^6.1.0
+  
+  # Navigation
+  go_router: ^12.0.0
+  
+  # UI & Icons
   cupertino_icons: ^1.0.8
+  google_fonts: ^6.0.0
+  flutter_svg: ^2.0.7
+  shimmer: ^3.0.0
+  
+  # Date & Time
+  intl: ^0.19.0
+  
+  # Image Handling
+  image_picker: ^1.0.0
+  cached_network_image: ^3.3.0
+  
+  # Calendar & Notifications
+  table_calendar: ^3.0.0
+  flutter_local_notifications: ^15.0.0
+  timezone: ^0.9.0
+  
+  # Location
+  geolocator: ^10.0.0
+  url_launcher: ^6.2.0
+  
+  # Storage
+  shared_preferences: ^2.2.0
+  
+  # Utils
+  uuid: ^4.0.0
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
