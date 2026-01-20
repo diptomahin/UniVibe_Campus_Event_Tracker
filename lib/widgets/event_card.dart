@@ -65,7 +65,11 @@ class EventCard extends StatelessWidget {
                           ),
                           child: const Text(
                             '⭐ Featured',
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF92400E),
+                            ),
                           ),
                         ),
                     ],

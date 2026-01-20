@@ -99,6 +99,26 @@ class NotificationProvider extends ChangeNotifier {
     }
   }
 
+  // UC8: Broadcast Announcement
+  Future<void> broadcastAnnouncement({
+    required String title,
+    required String message,
+  }) async {
+    _setLoading(true);
+    try {
+      await _notificationService.broadcastAnnouncement(
+        title: title,
+        message: message,
+      );
+      _errorMessage = null;
+    } catch (e) {
+      _errorMessage = e.toString();
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();

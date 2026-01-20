@@ -453,4 +453,26 @@ class UserService {
       throw Exception('Error counting users: $e');
     }
   }
+
+  // UC7: Update User Profile
+  Future<void> updateUserProfile({
+    required String userId,
+    required String fullName,
+    required String email,
+    required String bio,
+  }) async {
+    try {
+      await _supabase
+          .from(DatabaseTables.users)
+          .update({
+            'full_name': fullName,
+            'email': email,
+            'bio': bio,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', userId);
+    } catch (e) {
+      throw Exception('Error updating user profile: $e');
+    }
+  }
 }

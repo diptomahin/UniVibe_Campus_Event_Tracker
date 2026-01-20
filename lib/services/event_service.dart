@@ -103,9 +103,7 @@ class EventService {
     try {
       final eventData = event.toJson();
 
-      final response = await _supabase
-          .from(DatabaseTables.events)
-          .insert(eventData);
+      await _supabase.from(DatabaseTables.events).insert(eventData);
 
       // Notify all users about the new event
       await _notifyAllUsersOfNewEvent(event);

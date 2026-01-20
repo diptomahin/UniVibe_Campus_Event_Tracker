@@ -10,8 +10,10 @@ import '../screens/events/create_event_screen.dart';
 import '../screens/events/search_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/my_events_screen.dart';
+import '../screens/profile/edit_profile_screen.dart';
 import '../screens/settings/settings_screen.dart';
 import '../screens/admin/admin_dashboard_screen.dart';
+import '../screens/admin/broadcast_announcement_screen.dart';
 import '../screens/debug/debug_screen.dart';
 import '../screens/notifications_screen.dart';
 import '../providers/auth_provider.dart';
@@ -51,6 +53,10 @@ final appRouter = GoRouter(
       builder: (context, state) => const ProfileScreen(),
     ),
     GoRoute(
+      path: '/edit-profile',
+      builder: (context, state) => const EditProfileScreen(),
+    ),
+    GoRoute(
       path: '/my-events',
       builder: (context, state) => const MyEventsScreen(),
     ),
@@ -61,6 +67,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/admin',
       builder: (context, state) => const AdminDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/broadcast-announcement',
+      builder: (context, state) => const BroadcastAnnouncementScreen(),
     ),
     GoRoute(
       path: '/notifications',
