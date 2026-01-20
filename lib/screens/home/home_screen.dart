@@ -80,9 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.bug_report),
-            onPressed: () => context.go('/debug'),
+          Consumer<AuthProvider>(
+            builder: (context, authProvider, _) {
+              final isAdmin = authProvider.currentUser?.userRole == 'admin';
+              if (!isAdmin) {
+                return const SizedBox.shrink();
+              }
+              return IconButton(
+                icon: const Icon(Icons.bug_report),
+                onPressed: () => context.go('/debug'),
+              );
+            },
           ),
         ],
       ),

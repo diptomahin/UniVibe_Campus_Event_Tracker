@@ -51,14 +51,35 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               if (notificationProvider.notifications.isEmpty) {
                 return const SizedBox.shrink();
               }
-              return TextButton(
-                onPressed: () {
-                  final userId = context.read<AuthProvider>().currentUser?.id;
-                  if (userId != null) {
-                    context.read<NotificationProvider>().markAllAsRead(userId);
-                  }
-                },
-                child: const Text('Mark All as Read'),
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF10B981),
+                    foregroundColor: Colors.white,
+                    elevation: 4,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () {
+                    final userId = context.read<AuthProvider>().currentUser?.id;
+                    if (userId != null) {
+                      context.read<NotificationProvider>().markAllAsRead(
+                        userId,
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.done_all, size: 18),
+                  label: const Text(
+                    'Mark All as Read',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                  ),
+                ),
               );
             },
           ),

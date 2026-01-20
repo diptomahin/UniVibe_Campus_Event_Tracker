@@ -46,13 +46,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               length: 4,
               child: Column(
                 children: [
-                  const TabBar(
+                  TabBar(
                     tabs: [
                       Tab(icon: Icon(Icons.event), text: 'Events'),
                       Tab(icon: Icon(Icons.people), text: 'Users'),
                       Tab(icon: Icon(Icons.analytics), text: 'Analytics'),
                       Tab(icon: Icon(Icons.settings), text: 'Settings'),
                     ],
+                    labelStyle: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                    unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[400]
+                              : Colors.grey[700],
+                        ),
                   ),
                   SizedBox(
                     height: 600,

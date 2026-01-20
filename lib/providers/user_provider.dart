@@ -100,6 +100,31 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  // UC7: Update User Profile
+  Future<void> updateUserProfile({
+    required String userId,
+    required String fullName,
+    required String email,
+    required String bio,
+  }) async {
+    _setLoading(true);
+    try {
+      await _userService.updateUserProfile(
+        userId: userId,
+        fullName: fullName,
+        email: email,
+        bio: bio,
+      );
+      _errorMessage = null;
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString();
+      rethrow;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();

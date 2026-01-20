@@ -198,4 +198,46 @@ class NotificationService {
       throw Exception('Error fetching due reminders: $e');
     }
   }
+
+  // UC8: Broadcast Announcement
+  Future<void> broadcastAnnouncement({
+    required String title,
+    required String message,
+  }) async {
+    try {
+      // Get all users
+      final usersResponse = await _supabase
+          .from(DatabaseTables.users)
+          .select('id');
+
+      final userIds = (usersResponse as List)
+          .map((u) => u['id'] as String)
+          .toList();
+
+      if (userIds.isEmpty) {
+        throw Exception('No users found to broadcast to');
+      }
+
+      // Send announcement to all users
+      final List<Map<String, dynamic>> notifications = userIds
+          .map(
+            (userId) => {
+              'id': const Uuid().v4(),
+              'user_id': userId,
+              'event_id': null,
+              'title': title,
+              'message': message,
+              'type': 'announcement',
+              'is_read': false,
+              'created_at': DateTime.now().toIso8601String(),
+            },
+          )
+          .toList();
+
+      // Insert all notifications at once
+      await _supabase.from(DatabaseTables.notifications).insert(notifications);
+    } catch (e) {
+      throw Exception('Error broadcasting announcement: $e');
+    }
+  }
 }

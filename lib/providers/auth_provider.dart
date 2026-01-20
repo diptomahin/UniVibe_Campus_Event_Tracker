@@ -130,6 +130,13 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // Public method to refresh current user data from database
+  Future<void> refreshCurrentUser() async {
+    if (_currentUser != null) {
+      await _loadUserData(_currentUser!.id);
+    }
+  }
+
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();
