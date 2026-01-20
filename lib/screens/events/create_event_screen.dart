@@ -331,7 +331,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 items: _categories
                     .map(
                       (cat) => DropdownMenuItem(value: cat, child: Text(cat)),
@@ -476,7 +476,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                value: _visibility,
+                initialValue: _visibility,
                 items: const [
                   DropdownMenuItem(value: 'Public', child: Text('Public')),
                   DropdownMenuItem(value: 'Private', child: Text('Private')),

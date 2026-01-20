@@ -33,7 +33,7 @@ class EventService {
           .eq('id', eventId)
           .single();
 
-      return Event.fromJson(response as Map<String, dynamic>);
+      return Event.fromJson(response);
     } catch (e) {
       throw Exception('Error fetching event: $e');
     }

@@ -29,6 +29,9 @@ class _MyEventsScreenState extends State<MyEventsScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    const purple = Color(0xFF7B2CBF); // change if you want
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Events'),
@@ -38,6 +41,17 @@ class _MyEventsScreenState extends State<MyEventsScreen>
         ),
         bottom: TabBar(
           controller: _tabController,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: 14,
+          ),
+          labelColor: purple, // active tab (both modes)
+          unselectedLabelColor: isDarkMode ? Colors.white : Colors.black,
+          indicatorColor: purple,
           tabs: const [
             Tab(text: 'Going'),
             Tab(text: 'Interested'),

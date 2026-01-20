@@ -251,7 +251,7 @@ class UserService {
         .eq('id', eventId)
         .single();
 
-    return Event.fromJson(response as Map<String, dynamic>);
+    return Event.fromJson(response);
   }
 
   Future<void> toggleSaveEvent(String userId, String eventId) async {
@@ -354,7 +354,7 @@ class UserService {
           .select()
           .eq('id', userId)
           .single();
-      return response as Map<String, dynamic>;
+      return response;
     } catch (e) {
       throw Exception('Error fetching user: $e');
     }
