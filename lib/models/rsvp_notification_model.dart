@@ -47,6 +47,7 @@ class Notification {
   final String type;
   final bool isRead;
   final DateTime createdAt;
+  final DateTime? scheduledFor;
 
   Notification({
     required this.id,
@@ -57,6 +58,7 @@ class Notification {
     required this.type,
     this.isRead = false,
     required this.createdAt,
+    this.scheduledFor,
   });
 
   factory Notification.fromJson(Map<String, dynamic> json) {
@@ -69,11 +71,14 @@ class Notification {
       type: json['type'] as String,
       isRead: json['is_read'] as bool? ?? false,
       createdAt: DateTime.parse(json['created_at'] as String),
+      scheduledFor: json['scheduled_for'] != null
+          ? DateTime.parse(json['scheduled_for'] as String)
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final json = {
       'id': id,
       'user_id': userId,
       'event_id': eventId,
@@ -83,5 +88,9 @@ class Notification {
       'is_read': isRead,
       'created_at': createdAt.toIso8601String(),
     };
+    if (scheduledFor != null) {
+      json['scheduled_for'] = scheduledFor!.toIso8601String();
+    }
+    return json;
   }
 }
