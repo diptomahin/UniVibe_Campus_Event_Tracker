@@ -19,6 +19,19 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       final userId = context.read<AuthProvider>().currentUser?.id;
       if (userId != null) {
         context.read<NotificationProvider>().loadNotifications(userId);
+
+        // Auto-refresh notifications every 5 seconds
+        Future.doWhile(() async {
+          if (mounted) {
+            await Future.delayed(Duration(seconds: 5));
+            if (mounted) {
+              await context.read<NotificationProvider>().loadNotifications(
+                userId,
+              );
+            }
+          }
+          return mounted;
+        });
       }
     });
   }

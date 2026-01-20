@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../providers/event_provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/notification_provider.dart';
 import '../../widgets/event_card.dart';
 import '../../widgets/bottom_nav_bar.dart';
 
@@ -20,7 +21,28 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = context.read<AuthProvider>();
+      final notificationProvider = context.read<NotificationProvider>();
+
       context.read<EventProvider>().loadEvents();
+
+      final userId = authProvider.currentUser?.id;
+      if (userId != null) {
+        notificationProvider.loadNotifications(userId);
+        notificationProvider.startReminderCheck(userId);
+
+        Future.doWhile(() async {
+          if (mounted) {
+            await Future.delayed(Duration(seconds: 10));
+            if (mounted) {
+              await notificationProvider.loadNotifications(userId);
+            }
+          }
+          return mounted;
+        });
+
+        print('✅ Notifications initialized for user: $userId');
+      }
     });
   }
 
@@ -30,9 +52,33 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('UniVibe'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () => context.go('/notifications'),
+          Consumer<NotificationProvider>(
+            builder: (context, notificationProvider, child) {
+              final unreadCount = notificationProvider.notifications
+                  .where((n) => !n.isRead)
+                  .length;
+              return Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.notifications),
+                    onPressed: () => context.go('/notifications'),
+                  ),
+                  if (unreadCount > 0)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
           IconButton(
             icon: const Icon(Icons.bug_report),

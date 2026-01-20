@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/supabase_config.dart';
 import '../models/event_model.dart';
+import 'notification_service.dart';
 
 class EventService {
   final _supabase = Supabase.instance.client;
@@ -101,19 +102,58 @@ class EventService {
   Future<void> createEvent(Event event) async {
     try {
       final eventData = event.toJson();
-      print('🚀 [DEBUG] Creating event with data: $eventData');
-      print('🚀 [DEBUG] User ID: ${event.hostId}');
 
       final response = await _supabase
           .from(DatabaseTables.events)
           .insert(eventData);
 
-      print('✅ [DEBUG] Event created successfully: ${event.id}');
-      print('✅ [DEBUG] Response: $response');
+      // Notify all users about the new event
+      await _notifyAllUsersOfNewEvent(event);
     } catch (e) {
-      print('❌ [DEBUG] Error creating event: $e');
-      print('❌ [DEBUG] Full error details: ${e.runtimeType}');
       throw Exception('Error creating event: $e');
+    }
+  }
+
+  // Helper method to notify all users about new event and schedule reminders
+  Future<void> _notifyAllUsersOfNewEvent(Event event) async {
+    try {
+      print(
+        '🔔 [DEBUG] Starting notification broadcast for event: ${event.id}',
+      );
+      final notificationService = NotificationService();
+
+      // Get all users
+      print('👥 [DEBUG] Fetching all users from database...');
+      final allUsers = List<Map<String, dynamic>>.from(
+        await _supabase.from(DatabaseTables.users).select('id') as List,
+      );
+      print('👥 [DEBUG] Found ${allUsers.length} users');
+
+      for (var userDoc in allUsers) {
+        final userId = userDoc['id'] as String;
+        print('📝 [DEBUG] Creating notification for user: $userId');
+
+        try {
+          // Notify user about new event (no automatic reminder yet - only when they RSVP)
+          await notificationService.notifyEventCreated(
+            userId,
+            event.id,
+            event.title,
+            event.hostName,
+          );
+          print('✅ [DEBUG] New event notification created for user: $userId');
+        } catch (userError) {
+          print(
+            '❌ [DEBUG] Error creating notifications for user $userId: $userError',
+          );
+        }
+      }
+
+      print('✅ [DEBUG] Notifications created for all users');
+    } catch (e) {
+      print('⚠️ [DEBUG] Error notifying users: $e');
+      print('⚠️ [DEBUG] Stack trace: ${StackTrace.current}');
+      // Don't throw - event creation should succeed even if notifications fail
     }
   }
 

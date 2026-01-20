@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/supabase_config.dart';
 import '../models/event_model.dart';
 import '../models/rsvp_notification_model.dart';
+import 'notification_service.dart';
 
 class UserService {
   final _supabase = Supabase.instance.client;
@@ -211,11 +212,46 @@ class UserService {
       // Update event RSVP counts
       print('📊 [UserService] Calling _updateEventRsvpCounts...');
       await _updateEventRsvpCounts(eventId);
+
+      // Schedule reminder if user marked as interested or going
+      if (status == 'interested' || status == 'going') {
+        await _scheduleReminderForRsvp(userId, eventId);
+      }
+
       print('✅ [UserService] updateRsvpStatus completed');
     } catch (e) {
       print('❌ [UserService] Error updating RSVP status: $e');
       throw Exception('Error updating RSVP status: $e');
     }
+  }
+
+  // Helper method to schedule reminder when user RSVPs
+  Future<void> _scheduleReminderForRsvp(String userId, String eventId) async {
+    try {
+      // Get event details
+      final event = await getEventById(eventId);
+      final notificationService = NotificationService();
+
+      // Schedule reminder 1 day before event
+      await notificationService.scheduleEventReminder(
+        userId,
+        eventId,
+        event.title,
+        event.startTime,
+      );
+    } catch (e) {
+      // Don't throw - RSVP should succeed even if reminder scheduling fails
+    }
+  }
+
+  Future<Event> getEventById(String eventId) async {
+    final response = await _supabase
+        .from(DatabaseTables.events)
+        .select()
+        .eq('id', eventId)
+        .single();
+
+    return Event.fromJson(response as Map<String, dynamic>);
   }
 
   Future<void> toggleSaveEvent(String userId, String eventId) async {
@@ -303,7 +339,7 @@ class UserService {
       print('👥 [UserService] Fetching all users');
       final response = await _supabase.from(DatabaseTables.users).select();
       print('✅ [UserService] Fetched ${(response as List).length} users');
-      return (response as List).cast<Map<String, dynamic>>();
+      return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       print('❌ [UserService] Error fetching users: $e');
       throw Exception('Error fetching users: $e');
@@ -350,7 +386,7 @@ class UserService {
       print(
         '✅ [UserService] Found ${(response as List).length} matching users',
       );
-      return (response as List).cast<Map<String, dynamic>>();
+      return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       print('❌ [UserService] Error searching users: $e');
       throw Exception('Error searching users: $e');
