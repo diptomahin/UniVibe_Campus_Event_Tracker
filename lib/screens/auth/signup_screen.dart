@@ -138,6 +138,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 8),
                       TextField(
                         controller: _fullNameController,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.person,
@@ -145,7 +150,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           hintText: 'Enter your full name',
                           filled: true,
-                          fillColor: Colors.grey[100],
+                          fillColor:
+                              Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[800]
+                              : Colors.grey[100],
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
@@ -165,6 +173,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 8),
                       TextField(
                         controller: _emailController,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.email,
@@ -172,7 +185,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           hintText: 'Enter your email',
                           filled: true,
-                          fillColor: Colors.grey[100],
+                          fillColor:
+                              Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[800]
+                              : Colors.grey[100],
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
@@ -193,6 +209,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 8),
                       TextField(
                         controller: _passwordController,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.lock,
@@ -213,7 +234,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           hintText: 'Enter your password',
                           filled: true,
-                          fillColor: Colors.grey[100],
+                          fillColor:
+                              Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[800]
+                              : Colors.grey[100],
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
@@ -234,6 +258,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 8),
                       TextField(
                         controller: _confirmPasswordController,
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.lock,
@@ -254,7 +283,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           hintText: 'Confirm your password',
                           filled: true,
-                          fillColor: Colors.grey[100],
+                          fillColor:
+                              Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[800]
+                              : Colors.grey[100],
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
